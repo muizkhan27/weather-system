@@ -60,7 +60,7 @@ export default function WeatherPage() {
       </table>
 
       {lastSync && (
-        <p><strong>Last sync at:</strong> {new Date(lastSync).toLocaleString()}</p>
+        <p><strong>Last Sync At:</strong> {new Date(lastSync).toLocaleString()}</p>
       )}
     </div>
   );

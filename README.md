@@ -22,7 +22,7 @@ A dockerized full-stack system demonstrating Redis-based job queuing, automated 
 - Real-time weather data for London, New York, Tokyo, and Cairo
 - Temperature, wind speed, and last updated timestamps
 - Auto-refreshes every 5 seconds for live data
-- "Last sync at" timestamp showing most recent update
+- "Last Sync At" timestamp showing most recent update
 
 ### API Routes
 - `POST /api/job` - Enqueue manual weather job
