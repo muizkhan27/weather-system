@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./app
+    container_name: weather-app
+    ports:
+      - "3000:3000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/weather_db
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - weather-network
+
+  worker:
+    build: ./worker
+    container_name: weather-worker
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/weather_db
+    depends_on:
+      - redis
+      - postgres
+    networks:
+      - weather-network
+
+  producer:
+    build: ./producer
+    container_name: weather-producer
+    environment:
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+    networks:
+      - weather-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: weather-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - weather-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: weather-postgres
+    environment:
+      - POSTGRES_DB=weather_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - weather-network
+
+volumes:
+  postgres_data:
+
+networks:
+  weather-network:
+    driver: bridge
